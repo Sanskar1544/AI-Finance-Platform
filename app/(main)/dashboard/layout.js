@@ -10,11 +10,17 @@ export default function Layout() {
           Dashboard
         </h1>
       </div>
-      <Suspense
-        fallback={<BarLoader className="mt-4" width={"100%"} color="#9333ea" />}
-      >
-        <DashboardPage />
-      </Suspense>
+      <div className="w-full min-h-[350px]">
+        <Suspense
+          fallback={
+            <div className="w-full">
+              <BarLoader className="mt-4" width={"100%"} color="#9333ea" />
+            </div>
+          }
+        >
+          <DashboardPage />
+        </Suspense>
+      </div>
     </div>
   );
 }

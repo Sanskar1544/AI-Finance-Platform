@@ -29,9 +29,9 @@ CREATE TABLE "accounts" (
     "name" TEXT NOT NULL,
     "type" "AccountType" NOT NULL,
     "balance" DECIMAL(65,30) NOT NULL DEFAULT 0,
-    "isDefaukt" BOOLEAN NOT NULL DEFAULT false,
+    "isDefault" BOOLEAN NOT NULL DEFAULT false,
     "userId" TEXT NOT NULL,
-    "creatdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "accounts_pkey" PRIMARY KEY ("id")
@@ -42,7 +42,7 @@ CREATE TABLE "transactions" (
     "id" TEXT NOT NULL,
     "type" "TransactionType" NOT NULL,
     "amount" DECIMAL(65,30) NOT NULL,
-    "descition" TEXT,
+    "description" TEXT,
     "date" TIMESTAMP(3) NOT NULL,
     "category" TEXT NOT NULL,
     "recieptUrl" TEXT,

@@ -1,104 +1,102 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl      = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
+
 model User {
-  id                 String    @id @default(uuid())
-  clerkUserId        String    @unique //clerk user id
-  email              String    @unique
-  name               String?
-  imageUrl           String?
-  transactions       Transaction[]
-  accounts           Account[]
-  budgets            Budget[]
-  createdAt           DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
+  id           String        @id @default(uuid())
+  clerkUserId  String        @unique
+  email        String        @unique
+  name         String?
+  imageUrl     String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  accounts     Account[]
+  budgets      Budget?
+  transactions Transaction[]
 
   @@map("users")
 }
- model Account{
-   id                 String            @id @default (uuid())
-   name               String          
-   type               AccountType 
-   balance            Decimal           @default (0)  //will ask initial balance while creating an Account
-   isDefaukt          Boolean           @default(false)
-   userId             String            
-   user               User               @relation(fields: [userId], references: [id],onDelete: Cascade)
-   transactions       Transaction[]
-   creatdAt           DateTime          @default(now())
-   updatedAt          DateTime          @updatedAt
-   
-   @@index([userId])
-   @@map("accounts")
 
- }
-   enum AccountType {
-    CURRENT
-    SAVINGS
-   }
- model Transaction{
-   id                 String            @id @default (uuid())
-   type               TransactionType   
-   amount             Decimal
-   descition          String?
-   date               DateTime
-   category           String
-   recieptUrl         String?
-   isRecurring        Boolean           @default(false)
-   recurringInterval  RecurringInterval?
-   nextRecurringDate  DateTime?
-   lastProcessed      DateTime?
-   status             transactionStatus  @default(COMPLETED)
-   userId             String
-   user               User               @relation(fields: [userId], references: [id],onDelete: Cascade)
-   accountId          String 
-   account            Account            @relation(fields: [accountId], references: [id],onDelete: Cascade)
-   createdAt           DateTime          @default(now())
-   updatedAt          DateTime          @updatedAt
-  
+model Account {
+  id           String        @id @default(uuid())
+  name         String
+  type         AccountType
+  balance      Decimal       @default(0)
+  isDefault    Boolean       @default(false)
+  userId       String
+  updatedAt    DateTime      @updatedAt
+  createdAt    DateTime      @default(now())
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
 
-   @@index([userId])
-   @@index([accountId])
-   @@map("transactions")
+  @@index([userId])
+  @@map("accounts")
+}
 
- }
-  enum TransactionType{
-    INCOME 
-    EXPENSE
-  }
-  enum  RecurringInterval {
-    DAILY 
-    WEEKLY 
-    MONTHY 
-    YEARLY
-  }
-  enum transactionStatus{
-    PENDING
-    COMPLETED
-    FAILED
-  }
-  model Budget{
-     id                 String            @id @default (uuid())
-     amount             Decimal
-     lastAlertSent      DateTime?          //Track the last alert was sent
-     userId             String            @unique
-     user               User               @relation(fields: [userId], references: [id],onDelete: Cascade)
-     createdAt           DateTime          @default(now())
-     updatedAt          DateTime          @updatedAt
+model Transaction {
+  id                String             @id @default(uuid())
+  type              TransactionType
+  amount            Decimal
+  description         String?
+  date              DateTime
+  category          String
+  recieptUrl        String?
+  isRecurring       Boolean            @default(false)
+  recurringInterval RecurringInterval?
+  nextRecurringDate DateTime?
+  lastProcessed     DateTime?
+  status            transactionStatus  @default(COMPLETED)
+  userId            String
+  accountId         String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  account           Account            @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-        @@index([userId])
-        @@map("budgets")
-  
-  } 
+  @@index([userId])
+  @@index([accountId])
+  @@map("transactions")
+}
+
+model Budget {
+  id            String    @id @default(uuid())
+  amount        Decimal
+  lastAlertSent DateTime?
+  userId        String    @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("budgets")
+}
+
+enum AccountType {
+  CURRENT
+  SAVINGS
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum RecurringInterval {
+  DAILY
+  WEEKLY
+  MONTHY
+  YEARLY
+}
+
+enum transactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
