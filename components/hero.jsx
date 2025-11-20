@@ -44,7 +44,7 @@ const HeroSection = () => {
             </Link>
              <Link href="https://www.youtube.com">
             <Button size="lg" variant='outline' className="px-8">
-         Watch YouTube
+         Watch Demo
             </Button>
             </Link>
         </div>
