@@ -5,7 +5,7 @@ CREATE TYPE "AccountType" AS ENUM ('CURRENT', 'SAVINGS');
 CREATE TYPE "TransactionType" AS ENUM ('INCOME', 'EXPENSE');
 
 -- CreateEnum
-CREATE TYPE "RecurringInterval" AS ENUM ('DAILY', 'WEEKLY', 'MONTHY', 'YEARLY');
+CREATE TYPE "RecurringInterval" AS ENUM ('DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY');
 
 -- CreateEnum
 CREATE TYPE "transactionStatus" AS ENUM ('PENDING', 'COMPLETED', 'FAILED');
